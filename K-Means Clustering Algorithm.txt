@@ -1,0 +1,174 @@
+# K-Mean Clustering by : Rohit Shekhar Singh
+
+# Linkedin : https://www.linkedin.com/in/rohitshekharsingh/
+
+# Gmail : rohitshekrsingh@gmail.com
+
+# Date Created : 23/05/2022
+
+
+# This is K-mean clustering without using any libraries in python
+# Would be helpful for students learning the algorithm
+
+# For any doubt or you can contact me on my above contacts
+
+
+import csv
+datafile = open('dataa.csv', 'r')
+datareader = csv.reader(datafile,)
+data = []
+for row in datareader:
+    data.append(row)
+    
+s_1 = 3;
+s_2 = 4; 
+s_3 = 0;  
+
+c1 = []; c2 = []; c3 =  [];
+
+for row in range(0, 6):
+    
+    x = (float(data[row][1]) - float(data[s_1][1]));
+    y = (float(data[row][2]) - float(data[s_1][2]));
+    
+    d_s1 = x * x + y * y;
+    
+    x = (float(data[row][1]) - float(data[s_2][1]));
+    y = (float(data[row][2]) - float(data[s_2][2]));
+    
+    d_s2 = x * x + y * y;
+    
+    x = (float(data[row][1]) - float(data[s_3][1]));
+    y = (float(data[row][2]) - float(data[s_3][2]));
+    
+    d_s3 = x * x + y * y;
+    
+    if(d_s1 < d_s2 and d_s1 < d_s3):
+        c1.append(row)
+    
+    if(d_s2 < d_s1 and d_s2 < d_s3):
+        c2.append(row)
+    
+    if(d_s3 < d_s2 and d_s3 < d_s1):
+        c3.append(row)
+
+s1_x = 0.0; s2_x = 0.0;  s3_x = 0.0; s1_y = 0.0; s2_y = 0.0; s3_y = 0.0;
+
+for rows in c1:
+    s1_x = s1_x + float(data[rows][1]);
+    s1_y = s1_y + float(data[rows][2]);
+
+for rows in c2:
+    s2_x = s1_x + float(data[rows][1]);
+    s3_y = s1_y + float(data[rows][2]);
+
+for rows in c3:
+    s3_x = s3_x + float(data[rows][1]);
+    s3_y = s3_y + float(data[rows][2]);
+    
+s1_x/=len(c1);
+s1_y/=len(c1);
+s2_x/=len(c2);
+s2_y/=len(c2);
+s3_x/=len(c3);
+s3_y/=len(c3);
+
+
+print("Initial Clusters::\n");
+
+print("Cluster 1:: " , c1);
+print("Cluster 2:: " , c2);
+print("Cluster 3:: " , c3);
+
+print("\n\n\n");
+
+
+check = int(1);
+
+# while(check):
+#     print("hi");
+#     check = int(0);
+itr_count = int(1);
+while(check):
+    print("iteration:: " , itr_count);
+    
+    itr_count+=int(1);
+    
+    new_c1 = [];
+    new_c2 = [];
+    new_c3 = [];
+    
+    for row in range(0, 6):
+        
+        x = float(data[row][1]) - float(s1_x)
+        y = float(data[row][2]) - float(s1_y)
+                  
+        d_s1 = x * x + y * y
+                  
+        x = float(data[row][1]) - s2_x
+        y = float(data[row][2]) - s2_y
+                  
+        d_s2 = x * x + y * y
+        
+        x = float(data[row][1]) - s3_x
+        y = float(data[row][2]) - s3_y
+        
+        d_s3 = x * x + y * y
+        
+#         print(d_s1);
+#         print(d_s2);
+#         print(d_s3);
+                  
+        if(d_s1 < d_s2 and d_s1 < d_s3):
+            new_c1.append(row)
+
+        if(d_s2 < d_s1 and d_s2 < d_s3):
+            new_c2.append(row)
+
+        if(d_s3 < d_s2 and d_s3 < d_s1):
+            new_c3.append(row)
+
+    print("Cluster 1:: " , new_c1);
+    print("Cluster 2:: " , new_c2);
+    print("Cluster 3:: " , new_c3);
+    
+    if(c1 == new_c1 and c2 == new_c2 and c3 == new_c3):
+        break;
+    
+    s1_x = 0.0; s2_x = 0.0;  s3_x = 0.0; s1_y = 0.0; s2_y = 0.0; s3_y = 0.0;
+    
+    c1 = new_c1;
+    c2 = new_c2;
+    c3 = new_c3;
+    
+    for rows in new_c1:
+        
+        s1_x = s1_x + float(data[rows][1]);
+        s1_y = s1_y + float(data[rows][2]);
+
+    for rows in new_c2:
+        s2_x = s1_x + float(data[rows][1]);
+        s3_y = s1_y + float(data[rows][2]);
+
+    for rows in new_c3:
+        s3_x = s3_x + float(data[rows][1]);
+        s3_y = s3_y + float(data[rows][2]);
+    
+    len_c1 = len(c1); 
+    len_c2 = len(c2); 
+    len_c3 = len(c3); 
+    if(len_c1 == 0):
+        len_c1 = 1;
+    if(len_c2 == 0):
+        len_c2 = 1;
+    if(len_c3 == 0):
+        len_c3 = 1;
+        
+    s1_x/=len_c1;
+    s1_y/=len_c1;
+    s2_x/=len_c2;
+    s2_y/=len_c2;
+    s3_x/=len_c3;
+    s3_y/=len_c3;
+    
+    print("\n\n")
